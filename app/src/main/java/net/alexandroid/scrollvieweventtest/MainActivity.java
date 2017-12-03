@@ -15,9 +15,11 @@ import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final long DELAY_TIME = 1000;
+    public static final boolean IS_DELAY_DISABLED = false;
+
     private WebView mWebView;
     private ScrollView mScrollView;
-    public static final long DELAY_TIME = 1000;
     private long mTime;
 
     @Override
@@ -32,20 +34,36 @@ public class MainActivity extends AppCompatActivity {
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         mWebView.loadUrl("http:///www.alexandroid.net");
+
         setWebViewLogsListener();
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) { // API 17+
             WebSettings webViewSettings = mWebView.getSettings();
             webViewSettings.setJavaScriptEnabled(true);
-
-            mWebView.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    onPageLoaded();
-                }
-            });
+            setOnPageLoadedListener();
         }
+    }
 
+    /**
+     * Just prints the logs of WebView
+     */
+    private void setWebViewLogsListener() {
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.d("WebViewLogs", consoleMessage.message());
+                return true;
+            }
+        });
+    }
+
+    private void setOnPageLoadedListener() {
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                onPageLoaded();
+            }
+        });
     }
 
     private void setScrollViewListener() {
@@ -53,14 +71,23 @@ public class MainActivity extends AppCompatActivity {
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                if (mTime + DELAY_TIME < System.currentTimeMillis()) {
-                    mTime = System.currentTimeMillis();
-                    sendScrollEvent(mScrollView.getScrollY(), mScrollView.getScrollX());
-                }
+                onScrollViewScroll();
             }
         });
     }
 
+    private void onScrollViewScroll() {
+        if (IS_DELAY_DISABLED || mTime + DELAY_TIME < System.currentTimeMillis()) {
+            mTime = System.currentTimeMillis();
+            sendScrollEvent(mScrollView.getScrollY(), mScrollView.getScrollX());
+        }
+    }
+
+    /**
+     * Called when page is loaded.
+     * Simulate event listener.
+     * Web developers probably would use it to subscribe for scrolling events.
+     */
     private void onPageLoaded() {
         Log.e("WebViewLogs", "onPageLoaded");
 
@@ -68,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         invokeJavaScriptCode("" +
                 "jQuery(document).ready(function($){" +
                 "$(window).scroll(function(event, data) {" +
-                "console.log(\"LOG: top: \" + data.top + \"  left: \" + data.left);" +
+                "console.log(\"LOG: scrollTop: \" + data.scrollLeft + \"  scrollLeft: \" + data.scrollTop);" +
                 "});" +
                 "});");
     }
@@ -79,21 +106,11 @@ public class MainActivity extends AppCompatActivity {
                 String.format("" +
                                 "jQuery(document).ready(" +
                                 "function($){" +
-                                "$(window).trigger(\"scroll\", [{top: %d , left: %d}]);" +
+                                "$(window).trigger(\"scroll\", [{scrollTop: %d , scrollLeft: %d}]);" +
                                 "}" +
                                 ");"
                         , top, left)
         );
-    }
-
-    private void setWebViewLogsListener() {
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d("WebViewLogs", consoleMessage.message());
-                return true;
-            }
-        });
     }
 
     @SuppressWarnings("SameParameterValue")
