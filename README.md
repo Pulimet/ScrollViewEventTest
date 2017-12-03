@@ -68,6 +68,46 @@ private void invokeJavaScriptCode(String code) {
     [self.webView evaluateJavaScript:js completionHandler:nil];
 }
 ```
+
+# HTML:
+```htm
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		$(window).scroll(function(event, data) {
+			console.log("LOG: scrollTop: " + data.scrollTop + "  scrolLeft: " + data.scrolLeft);
+			$("#list").append("<li>LOG: scrollTop: " + data.scrollTop + "  scrolLeft: " + data.scrolLeft);
+		});	
+
+		
+		$(document).ready(function() {
+			$("button").click(function() {
+  				$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30}]);
+  			});
+		});
+
+	</script>
+</head>
+<body style="overflow: hidden;">
+	<h1 id="elem">Hello!</h1>
+	<button id="button" type="button" style="
+		background-color: #4CAF50; 
+    	border: none;
+    	color: white;
+    	padding: 15px 32px;
+    	text-align: center;
+    	text-decoration: none;
+    	display: inline-block;
+    	font-size: 16px;">SEND EVENT</button>
+	
+	<ul id="list">
+	<ul>
+</body>
+</html>
+```
     
 
 <img src="https://raw.githubusercontent.com/Pulimet/ScrollViewEventTest/master/art/webviewlogs.png">
