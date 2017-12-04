@@ -62,16 +62,22 @@ private void invokeJavaScriptCode(String code) {
 
 # Sending event (IOS):
 ```swift
+@property NSTimeInterval timeStamp;
+ 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    NSString *js = [[NSString alloc]initWithFormat:
+     if(self.timeStamp + 20.0 < [[NSDate date] timeIntervalSince1970]){
+        self.timeStamp = [[NSDate date] timeIntervalSince1970];
+        NSString *js = [[NSString alloc]initWithFormat:
             @"jQuery(document).ready(function($){
 	        $(window).trigger(\"scroll\", [{scrollTop: %f, scrollLeft: %f}]);
 	    });",scrollView.contentOffset.y,scrollView.contentOffset.x];
-    [self.webView evaluateJavaScript:js completionHandler:nil];
+        [self.webView evaluateJavaScript:js completionHandler:nil];
+    }
 }
 ```
 
 # HTML:
+ http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/scroll_check.html
 ```htm
 <!DOCTYPE html>
 <html>
@@ -109,6 +115,20 @@ private void invokeJavaScriptCode(String code) {
 	<ul>
 </body>
 </html>
+```
+
+# HTML only to recieve and print the event:
+ http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index.html
+```html
+<html><head><title></title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+         $(window).scroll(function(event, data) {
+                      $("#list").append("<li>scrollTop: " + data.scrollTop + "  scrolLeft: " + data.scrollLeft);
+         });       
+        </script>
+</head>
+<body style="overflow: hidden;"><ul id="list"><ul></body></html>
 ```
     
 
