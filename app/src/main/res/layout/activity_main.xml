@@ -36,7 +36,7 @@
         <TextView
             android:id="@+id/tvBottom"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="400dp"
             android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:text="@string/some_content_is_here"

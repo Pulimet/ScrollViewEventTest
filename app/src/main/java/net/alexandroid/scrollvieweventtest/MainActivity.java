@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SetJavaScriptEnabled")
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
-        mWebView.loadUrl("http:///www.alexandroid.net");
+        //mWebView.loadUrl("http:///www.alexandroid.net");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index.html");
 
         setWebViewLogsListener();
 
