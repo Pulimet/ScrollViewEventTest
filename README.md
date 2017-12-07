@@ -21,7 +21,7 @@ jQuery(document).ready(function($){
 
 # Sending event (Android):
 ```java
-public static final long DELAY_TIME = 1000;
+public static final long DELAY_TIME = 500;
 public static final boolean IS_DELAY_DISABLED = false;
 ...
 private void setScrollViewListener() {
