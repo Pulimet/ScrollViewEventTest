@@ -1,7 +1,7 @@
 # ScrollViewEventTest
 How to send a system scroll event from ScrollView and listen for it in WebView.
 
-HTML sample: http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/scroll_check.html
+[Video demo on Android](https://youtu.be/q_Uj-C11eww)
 
 # Listen for system scroll event
 ```javascript
