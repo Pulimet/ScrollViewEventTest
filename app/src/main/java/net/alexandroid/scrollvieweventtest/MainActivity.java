@@ -1,6 +1,7 @@
 package net.alexandroid.scrollvieweventtest;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         //mWebView.loadUrl("http:///www.alexandroid.net");
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index.html");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index6.html");
 
         setWebViewLogsListener();
+
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) { // API 17+
             WebSettings webViewSettings = mWebView.getSettings();
@@ -103,14 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     private void sendScrollEvent(int top, int left) {
+        int webViewTop = mWebView.getTop();
+        int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         invokeJavaScriptCode(
                 String.format("" +
                                 "jQuery(document).ready(" +
                                 "function($){" +
-                                "$(window).trigger(\"scroll\", [{scrollTop: %d , scrollLeft: %d}]);" +
+                                "$(window).trigger(\"scroll\", " +
+                                "[{scrollTop: %d , scrollLeft: %d, webViewTop: %d, screenHeight: %d}]);" +
                                 "}" +
                                 ");"
-                        , top, left)
+                        , top, left, webViewTop, screenHeight)
         );
     }
 
