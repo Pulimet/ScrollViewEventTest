@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 	<title></title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
 		$(window).scroll(function(event, data) {
 			console.log("LOG: scrollTop: " + data.scrollTop + "  scrolLeft: " + data.scrolLeft);
-			$("#list").append("<li>LOG: scrollTop: " + data.scrollTop + "  scrolLeft: " + data.scrolLeft);
+			$("#list").append("
+			<li>LOG: scrollTop: " + data.scrollTop + 
+			"  scrolLeft: " + data.scrolLeft +
+			"  webViewYOrigin: " + data.webViewYOrigin +
+                        "  screenHeight: " + data.screenHeight +
+                        "</br></br>"
+			);
 		});	
 
 		
 		$(document).ready(function() {
 			$("button").click(function() {
-  				$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30}]);
+  				$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30, webViewYOrigin : 200, screenHeight: 1200}]);
   			});
 		});
 
@@ -21,8 +26,6 @@
 </head>
 <body style="overflow: hidden;">
 	<h1 id="elem">Hello!</h1>
-	<a href="https://github.com/Pulimet/ScrollViewEventTest" target="_blank">https://github.com/Pulimet/ScrollViewEventTest</a>
-	</br></br>
 	<button id="button" type="button" style="
 		background-color: #4CAF50; 
     	border: none;
