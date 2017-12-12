@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         //mWebView.loadUrl("http:///www.alexandroid.net");
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index6.html");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index12.html");
 
         setWebViewLogsListener();
 
@@ -93,14 +93,17 @@ public class MainActivity extends AppCompatActivity {
      */
     private void onPageLoaded() {
         Log.e("WebViewLogs", "onPageLoaded");
-
         // Register scroll event listener
-        invokeJavaScriptCode("" +
-                "jQuery(document).ready(function($){" +
-                "$(window).scroll(function(event, data) {" +
-                "console.log(\"LOG: scrollTop: \" + data.scrollLeft + \"  scrollLeft: \" + data.scrollTop);" +
-                "});" +
-                "});");
+        invokeJavaScriptCode("        jQuery(document).ready(function($) {\n" +
+                "            $(window).scroll(function(event, data) {\n" +
+                "                console.log(\n" +
+                "                        \"LOG: scrollTop: \" + data.scrollTop +\n" +
+                "                                \"  scrolLeft: \" + data.scrolLeft +\n" +
+                "                                \"  webViewYOrigin: \" + data.webViewYOrigin +\n" +
+                "                                \"  screenHeight: \" + data.screenHeight\n" +
+                "                );\n" +
+                "            });\n" +
+                "        });");
     }
 
     @SuppressLint("DefaultLocale")
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                 "jQuery(document).ready(" +
                                 "function($){" +
                                 "$(window).trigger(\"scroll\", " +
-                                "[{scrollTop: %d , scrollLeft: %d, webViewTop: %d, screenHeight: %d}]);" +
+                                "[{scrollTop: %d , scrollLeft: %d, webViewYOrigin: %d, screenHeight: %d}]);" +
                                 "}" +
                                 ");"
                         , top, left, webViewTop, screenHeight)
