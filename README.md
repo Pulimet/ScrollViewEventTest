@@ -1,10 +1,6 @@
 # ScrollViewEventTest
 How to send a system scroll event from ScrollView and listen for it in WebView.
 
-
-# Video demo on Android
-[![Alt text for your video](http://img.youtube.com/vi/q_Uj-C11eww/0.jpg)](https://youtu.be/q_Uj-C11eww)
-
 # Listen for system scroll event
 ```javascript
 jQuery(document).ready(function($){
@@ -31,20 +27,31 @@ jQuery(document).ready(function($){
 ```java
 public static final long DELAY_TIME = 500;
 public static final boolean IS_DELAY_DISABLED = false;
+private CustomScrollView mScrollView;
 ...
 private void setScrollViewListener() {
-  mScrollView = findViewById(R.id.scrollView);
-  mScrollView.getViewTreeObserver().addOnScrollChangedListener(
-          new ViewTreeObserver.OnScrollChangedListener() {
-    @Override
-    public void onScrollChanged() {
-      if (IS_DELAY_DISABLED || mTime + DELAY_TIME < System.currentTimeMillis()) {
+    mScrollView = findViewById(R.id.scrollView);
+    mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+              onScrollViewScroll(false);
+        }
+    });
+    mScrollView.setOnScrollStoppedListener(new CustomScrollView.OnScrollStoppedListener() {
+        @Override
+        public void onScrollStopped() {
+            onScrollViewScroll(true);
+        }
+    });
+}
+
+private void onScrollViewScroll(boolean force) {
+    if (IS_DELAY_DISABLED || force || mTime + DELAY_TIME < System.currentTimeMillis()) {
         mTime = System.currentTimeMillis();
         sendScrollEvent(mScrollView.getScrollY(), mScrollView.getScrollX());
-      }
     }
-  });
 }
+
 
 private void sendScrollEvent(int top, int left) {
 	int webViewTop = mWebView.getTop();
@@ -62,12 +69,59 @@ private void sendScrollEvent(int top, int left) {
 }
 
 private void invokeJavaScriptCode(String code) {
-   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-     mWebView.evaluateJavascript(code, null);
-   } else {
-     mWebView.loadUrl(String.format("javascript:%s", code));
-   }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+         mWebView.evaluateJavascript(code, null);
+    } else {
+         mWebView.loadUrl(String.format("javascript:%s", code));
+    }
 }
+
+// Custom ScrollView
+public class CustomScrollView extends ScrollView {
+
+    private boolean mFling;
+
+    public CustomScrollView(Context context) {
+        super(context);
+    }
+
+    public CustomScrollView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CustomScrollView(Context context, AttributeSet attrs,
+            int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public interface OnScrollStoppedListener {
+        void onScrollStopped();
+    }
+
+    private OnScrollStoppedListener onScrollStoppedListener;
+
+    public void setOnScrollStoppedListener(OnScrollStoppedListener listener) {
+        onScrollStoppedListener = listener;
+    }
+
+    @Override
+    public void fling(int velocityY) {
+        super.fling(velocityY);
+        mFling = true;
+    }
+
+    @Override
+    protected void onScrollChanged(int x, int y, int oldx, int oldy) {
+        super.onScrollChanged(x, y, oldx, oldy);
+        if (mFling && Math.abs(y - oldy) < 2) {
+            mFling = false;
+            if(onScrollStoppedListener != null) {
+                onScrollStoppedListener.onScrollStopped();
+            }
+        }
+    }
+}
+
 
 ```    
 
@@ -168,5 +222,8 @@ private void invokeJavaScriptCode(String code) {
 
 ```
 
+
+# Video demo on Android
+[![Alt text for your video](http://img.youtube.com/vi/q_Uj-C11eww/0.jpg)](https://youtu.be/q_Uj-C11eww)
 
 

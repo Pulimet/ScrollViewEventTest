@@ -12,15 +12,14 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final long DELAY_TIME = 1000;
+    public static final long DELAY_TIME = 500;
     public static final boolean IS_DELAY_DISABLED = false;
 
     private WebView mWebView;
-    private ScrollView mScrollView;
+    private CustomScrollView mScrollView;
     private long mTime;
 
     @Override
@@ -74,13 +73,21 @@ public class MainActivity extends AppCompatActivity {
         mScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                onScrollViewScroll();
+                onScrollViewScroll(false);
             }
         });
+
+        mScrollView.setOnScrollStoppedListener(new CustomScrollView.OnScrollStoppedListener() {
+            @Override
+            public void onScrollStopped() {
+                onScrollViewScroll(true);
+            }
+        });
+
     }
 
-    private void onScrollViewScroll() {
-        if (IS_DELAY_DISABLED || mTime + DELAY_TIME < System.currentTimeMillis()) {
+    private void onScrollViewScroll(boolean force) {
+        if (IS_DELAY_DISABLED || force || mTime + DELAY_TIME < System.currentTimeMillis()) {
             mTime = System.currentTimeMillis();
             sendScrollEvent(mScrollView.getScrollY(), mScrollView.getScrollX());
         }
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     private void sendScrollEvent(int top, int left) {
+        Log.d("WebViewLogs", "sendScrollEvent: top: " + top);
         int webViewTop = mWebView.getTop();
         int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
         invokeJavaScriptCode(
