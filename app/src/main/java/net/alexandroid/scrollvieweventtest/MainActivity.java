@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         //mWebView.loadUrl("http:///www.alexandroid.net");
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index12.html");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index13.html");
 
         setWebViewLogsListener();
 
