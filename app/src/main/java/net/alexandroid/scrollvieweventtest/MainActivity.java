@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         //mWebView.loadUrl("http:///www.alexandroid.net");
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index13.html");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index14.html");
 
         setWebViewLogsListener();
 
@@ -80,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
         mScrollView.setOnScrollStoppedListener(new CustomScrollView.OnScrollStoppedListener() {
             @Override
             public void onScrollStopped() {
+                onScrollViewScroll(true);
+            }
+
+            @Override
+            public void onTouchActionUp() {
                 onScrollViewScroll(true);
             }
         });

@@ -2,11 +2,14 @@ package net.alexandroid.scrollvieweventtest;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class CustomScrollView extends ScrollView {
 
     private boolean mFling;
+    private boolean mScrolled;
 
     public CustomScrollView(Context context) {
         super(context);
@@ -22,6 +25,8 @@ public class CustomScrollView extends ScrollView {
 
     public interface OnScrollStoppedListener {
         void onScrollStopped();
+
+        void onTouchActionUp();
     }
 
     private OnScrollStoppedListener onScrollStoppedListener;
@@ -39,11 +44,32 @@ public class CustomScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int x, int y, int oldx, int oldy) {
         super.onScrollChanged(x, y, oldx, oldy);
+        mScrolled = true;
+
         if (mFling && Math.abs(y - oldy) < 2) {
             mFling = false;
-            if(onScrollStoppedListener != null) {
+            if (onScrollStoppedListener != null) {
                 onScrollStoppedListener.onScrollStopped();
             }
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_SCROLL:
+                Log.d("WebViewLogs", "ACTION_SCROLL");
+                break;
+            case MotionEvent.ACTION_UP:
+                if (onScrollStoppedListener != null && mScrolled) {
+                    Log.d("WebViewLogs", "ACTION_UP, mScrolled: true");
+                    mScrolled = false;
+                    onScrollStoppedListener.onTouchActionUp();
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
+
 }

@@ -1,0 +1,21 @@
+<html><head><title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+         $(window).scroll(function(event, data) {
+                      $("#list").append(
+                           "<li>Top: " + data.scrollTop +
+                           "  L: " + data.scrollLeft +
+                           "  Y: " + data.webViewYOrigin +
+                           "  Height: " + data.screenHeight +
+                           "</br></br>"
+                      );
+         });       
+        </script>
+</head>
+<body style="overflow: hidden;">
+
+<ul id="list"></ul>
+</br></br>
+<h3>It is WebView</h3>
+</br></br>
+</body></html>

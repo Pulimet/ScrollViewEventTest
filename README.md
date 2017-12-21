@@ -42,6 +42,10 @@ private void setScrollViewListener() {
         public void onScrollStopped() {
             onScrollViewScroll(true);
         }
+        @Override
+        public void onTouchActionUp() {
+            onScrollViewScroll(true);
+        }        
     });
 }
 
