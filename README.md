@@ -2,6 +2,7 @@
 How to send a system scroll event from ScrollView and listen for it in WebView.
 
 # Listen for system scroll event
+* jQuery
 ```javascript
 jQuery(document).ready(function($){
 	$(window).scroll(function(event, data) {
@@ -14,14 +15,39 @@ jQuery(document).ready(function($){
 	});	
 });
 ```
+* Vanilla
+```javascript
+document.addEventListener('scroll', function(data){ 
+	console.log(
+        	"LOG: scrollTop: " + data.scrollTop + 
+		"  scrolLeft: " + data.scrolLeft +
+		"  webViewYOrigin: " + data.webViewYOrigin +
+		"  screenHeight: " + data.screenHeight 
+	);
+}, true);
+```
+
+
 
 # Sending event:
+* jQuery
 ```javascript
 jQuery(document).ready(function($){
 	$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30, 
 			webViewYOrigin : 200, screenHeight: 1200}]);
 });
 ```
+
+* Vanilla
+```javascript
+var event = new Event(
+	'scroll', [{scrollTop: 20, 
+			scrolLeft: 30, 	
+			webViewYOrigin : 200, 
+			screenHeight: 1200}]);
+document.dispatchEvent(event);
+```
+
 
 # Sending event (Android):
 ```java
