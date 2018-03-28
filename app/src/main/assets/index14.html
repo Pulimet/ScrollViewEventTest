@@ -9,7 +9,24 @@
                            "  Height: " + data.screenHeight +
                            "</br></br>"
                       );
+                      $("#list").append("test");
          });
+
+
+		$( document ).ready(function() {
+			var x = "User-agent header sent: " + navigator.userAgent;
+
+			if (navigator.userAgent.match(/Android/i)){
+				<!--$("#list").append("<li>Android </br></br>");-->
+				<!--$("#list").append("App version: " + navigator.appVersion + " </br></br>");-->
+				<!--$("#list").append("App code name: " + navigator.appCodeName + " </br></br>");-->
+				<!--$("#list").append(x + </br></br>);-->
+				$("#list").append("App version from interface: "+ window.AndroidWebView.getAppVersion() + "</br></br>");
+
+			} else {
+				$("#list").append("<li>Not Android");
+			}
+		});
         </script>
 </head>
 <body style="overflow: hidden;">

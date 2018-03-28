@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -30,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
         setScrollViewListener();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     private void setWebView() {
         mWebView = findViewById(R.id.webView);
         //mWebView.loadUrl("http:///www.alexandroid.net");
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index15.html");
+        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/Pulimet/ScrollViewEventTest/blob/master/html/index14.html");
+       // mWebView.loadUrl("file:///android_asset/index14.html");
 
         setWebViewLogsListener();
 
@@ -43,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
             WebSettings webViewSettings = mWebView.getSettings();
             webViewSettings.setJavaScriptEnabled(true);
             setOnPageLoadedListener();
+
+            mWebView.addJavascriptInterface(new JavaScriptInterface(), "AndroidWebView");
+        }
+    }
+
+
+    public class JavaScriptInterface {
+        @JavascriptInterface
+        public int getAppVersion() {
+            return BuildConfig.VERSION_CODE;
         }
     }
 
