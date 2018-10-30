@@ -8,7 +8,7 @@ jQuery(document).ready(function($){
 	$(window).scroll(function(event, data) {
 		console.log(
 			"LOG: scrollTop: " + data.scrollTop + 
-			"  scrolLeft: " + data.scrolLeft +
+			"  scrollLeft: " + data.scrollLeft +
 			"  webViewYOrigin: " + data.webViewYOrigin +
 			"  screenHeight: " + data.screenHeight 
 		);
@@ -20,7 +20,7 @@ jQuery(document).ready(function($){
 document.addEventListener('scroll', function(data){ 
 	console.log(
         	"LOG: scrollTop: " + data.scrollTop + 
-		"  scrolLeft: " + data.scrolLeft +
+		"  scrollLeft: " + data.scrollLeft +
 		"  webViewYOrigin: " + data.webViewYOrigin +
 		"  screenHeight: " + data.screenHeight 
 	);
@@ -33,7 +33,7 @@ document.addEventListener('scroll', function(data){
 * jQuery
 ```javascript
 jQuery(document).ready(function($){
-	$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30, 
+	$(window).trigger("scroll", [{scrollTop: 20, scrollLeft: 30, 
 			webViewYOrigin : 200, screenHeight: 1200}]);
 });
 ```
@@ -42,7 +42,7 @@ jQuery(document).ready(function($){
 ```javascript
 var event = new Event(
 	'scroll', [{scrollTop: 20, 
-			scrolLeft: 30, 	
+			scrollLeft: 30, 	
 			webViewYOrigin : 200, 
 			screenHeight: 1200}]);
 document.dispatchEvent(event);
@@ -158,7 +158,7 @@ public class CustomScrollView extends ScrollView {
 # Sending event (IOS):
 ```swift
 @property NSTimeInterval timeStamp;
- 
+ //Objective
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
      if(self.timeStamp + 20.0 < [[NSDate date] timeIntervalSince1970]){
         self.timeStamp = [[NSDate date] timeIntervalSince1970];
@@ -169,6 +169,19 @@ public class CustomScrollView extends ScrollView {
         [self.webView evaluateJavaScript:js completionHandler:nil];
     }
 }
+
+//Swift
+if(self.timeStamp + 0.5 < Date().timeIntervalSince1970){
+	self.timeStamp = Date().timeIntervalSince1970
+	let js = "jQuery(document).ready(function($){$(window).trigger(\"scroll\", [{scrollTop: \(scrollView.contentOffset.y > 0 ? scrollView.contentOffset.y : 0), scrollLeft: \(scrollView.contentOffset.x)}]);});"
+	webView.evaluateJavaScript(js, completionHandler: nil)
+}
+
+// Debug logs:
+func injectScrool() -> String{
+	return "jQuery(document).ready(function($){$(window).scroll(function(event, data) {console.log(\"LOG: scrollTop: \" + data.scrollTop +\"  scrollLeft: \" + data.scrollLeft);});});"
+}
+
 ```
 
 
@@ -182,7 +195,7 @@ public class CustomScrollView extends ScrollView {
          $(window).scroll(function(event, data) {
                       $("#list").append(
                            "<li>scrollTop: " + data.scrollTop + 
-                           "  scrolLeft: " + data.scrollLeft +
+                           "  scrollLeft: " + data.scrollLeft +
                            "  webViewYOrigin: " + data.webViewYOrigin +
                            "  screenHeight: " + data.screenHeight +
                            "</br></br>"
@@ -209,14 +222,14 @@ public class CustomScrollView extends ScrollView {
 		$(window).scroll(function(event, data) {
 			console.log(
 				"LOG: scrollTop: " + data.scrollTop + 
-				"  scrolLeft: " + data.scrolLeft +
+				"  scrollLeft: " + data.scrollLeft +
 				"  webViewYOrigin: " + data.webViewYOrigin +
 				"  screenHeight: " + data.screenHeight 
 			);
 			
 			$("#list").append(
 			"<li>LOG: scrollTop: " + data.scrollTop + 
-			"  scrolLeft: " + data.scrolLeft +
+			"  scrollLeft: " + data.scrollLeft +
 			"  webViewYOrigin: " + data.webViewYOrigin +
                         "  screenHeight: " + data.screenHeight +
                         "</br></br>"
@@ -226,7 +239,7 @@ public class CustomScrollView extends ScrollView {
 		
 		$(document).ready(function() {
 			$("button").click(function() {
-  				$(window).trigger("scroll", [{scrollTop: 20, scrolLeft: 30, 
+  				$(window).trigger("scroll", [{scrollTop: 20, scrollLeft: 30, 
 						webViewYOrigin : 200, screenHeight: 1200}]);
   			});
 		});
