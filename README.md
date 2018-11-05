@@ -27,7 +27,7 @@ document.addEventListener('scroll', function(data){
 }, true);
 ```
 * Custom event
-```
+```javascript
 document.addEventListener('nativescroll', function (e) { console.log(
 	'scrollTop: ' + e.detail.scrollTop +
 	' scrollLeft: ' + e.detail.scrollLeft +
@@ -57,7 +57,7 @@ document.dispatchEvent(event);
 ```
 
 * Custom event
-```
+```javascript
 document.dispatchEvent(new CustomEvent('nativescroll', 
 	{"detail": {"scrollTop": 1 , "scrollLeft": 2, "webViewYOrigin": 3, "screenHeight":4}}));
 ```
