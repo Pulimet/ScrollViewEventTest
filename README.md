@@ -26,7 +26,15 @@ document.addEventListener('scroll', function(data){
 	);
 }, true);
 ```
-
+* Custom event
+```
+document.addEventListener('nativescroll', function (e) { console.log(
+	'scrollTop: ' + e.detail.scrollTop +
+	' scrollLeft: ' + e.detail.scrollLeft +
+	' webViewYOrigin: ' + e.detail.webViewYOrigin +
+	' screenHeight: ' + e.detail.screenHeight
+	); }, false);
+```
 
 
 # Sending event:
@@ -46,6 +54,12 @@ var event = new Event(
 			webViewYOrigin : 200, 
 			screenHeight: 1200}]);
 document.dispatchEvent(event);
+```
+
+* Custom event
+```
+document.dispatchEvent(new CustomEvent('nativescroll', 
+	{"detail": {"scrollTop": 1 , "scrollLeft": 2, "webViewYOrigin": 3, "screenHeight":4}}));
 ```
 
 
